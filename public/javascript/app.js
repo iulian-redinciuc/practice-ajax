@@ -3,29 +3,49 @@
 
   petsContainer.addEventListener("click", function onClick(e) {
     if (e.target.tagName === "BUTTON") {
-      switch (e.target.dataset.type) {
-        case "edit":
-          swal({
-            title: "Edit pet",
-            html: createPetCard(
-              {
-                name: "Bob",
-                type: "cat",
-                created: Date.now()
-              },
-              true
-            ),
-            confirmButtonText: "Save",
-            showCancelButton: true,
-            cancelButtonText: "Cancel",
-            width: "50%"
-          });
-          break;
-        case "delete":
-          break;
-        default:
-          break;
-      }
+      // let idOfEditedPet = DataService.requestPet(e.target.parentNode.dataset.id);
+      let getPet = new XMLHttpRequest();
+      getPet.open("GET", `/pets/${e.target.parentNode.dataset.id}`);
+      getPet.setRequestHeader("Content-Type", "application/json");
+      getPet.addEventListener("load", function onLoad() {
+        switch (getPet.status) {
+          case 200:
+          let petData = JSON.parse(getPet.response);
+          
+          switch (e.target.dataset.type) {
+            case "edit":
+              swal({
+                title: "Edit pet",
+                html: createPetCard(
+                  {
+                    name: petData.name,
+                    type: petData.type,
+                    created: petData.created
+                  },
+                  true
+                ),
+                confirmButtonText: "Save",
+                showCancelButton: true,
+                cancelButtonText: "Cancel",
+                width: "50%"
+              }).then((result) => {
+                if (result.value) {
+                  swal(
+                    'Edited!',
+                    'Your Pet has been edited.',
+                    'success'
+                  )
+                }
+              })
+
+          }
+        }
+      });
+    
+      getPet.addEventListener("error", function onError() {});
+    
+      getPet.send();
+
     }
   });
 
@@ -112,7 +132,7 @@
   
     search.send();
   });
-  timeout = undefined
+
   document.getElementById("searchForm").addEventListener("keyup", () => {
     
     

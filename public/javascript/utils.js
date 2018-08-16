@@ -70,4 +70,21 @@ class DataService {
     });
   }
 
+  static requestPet(petId) {
+    let getPet = new XMLHttpRequest();
+    getPet.open("GET", `/pets/${petId}`);
+    getPet.setRequestHeader("Content-Type", "application/json");
+    getPet.addEventListener("load", function onLoad() {
+      switch (getPet.status) {
+        case 200:
+        console.log(JSON.parse(getPet.response));
+         return JSON.parse(getPet.response);
+      }
+    });
+  
+    getPet.addEventListener("error", function onError() {});
+  
+    getPet.send();
+  }
+
 }
