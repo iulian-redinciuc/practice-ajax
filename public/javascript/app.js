@@ -27,7 +27,40 @@
                   showCancelButton: true,
                   cancelButtonText: "Cancel",
                   width: "50%"
-                });
+                }).then((result) => {
+
+                  let newName = document.querySelector("#swal2-content .pet h1").innerHTML;
+                  let updateDate = document.querySelector("#swal2-content .pet .age #created-at").innerHTML;
+                  let newDate = Date.now() - (updateDate * 86400000);
+                  console.log(newDate);
+                  if (result.value) {
+
+                    let payload = {
+                      name: newName,
+                      type: petData.type,
+                      created: newDate
+                    }
+                    DataService.editPet(e.target.parentNode.dataset.id, payload , function(){
+
+                      let petCard = document.querySelector(`[data-id='${e.target.parentNode.dataset.id}'`);
+                      petCard.querySelector("h1").innerHTML = newName;
+                      function getAge(timestamp) {
+                        let age = Date.now() - timestamp;
+                        let days = Math.floor(age / (1000 * 60 * 60 * 24));
+                      
+                        return days;
+                      }
+                      petCard.querySelector(".age #created-at").innerHTML = getAge(newDate);
+
+                      swal(
+                        'Edited!',
+                        'Your Pet has been edited',
+                        'success'
+                      )
+                    })
+
+                  }
+                })
                 break;
               case "delete":
                 /* delete pet */
@@ -81,8 +114,15 @@
 
     DataService.searchPet(name, function(res) {
       petsContainer.innerHTML = null;
-
+      console.log(res);
+      if(res.length === 0) {
+        swal({
+          type: 'error',
+          title: 'No results matching your search',
+        })
+      }
       res.forEach(pet => {
+        
         let petEl = createPetCard(pet);
         petEl.setAttribute("data-id", pet.id);
         petsContainer.appendChild(petEl);

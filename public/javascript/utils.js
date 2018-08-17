@@ -18,6 +18,7 @@ function createPetCard({ name, type, created }, isEditable = false) {
   let ageEl = document.createElement("p");
   let days = document.createElement("span");
   days.contentEditable = isEditable;
+  days.id = "created-at"
   days.innerText = getAge(created);
 
   ageEl.classList.add("age");
