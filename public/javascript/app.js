@@ -132,11 +132,9 @@
   
     search.send();
   });
-
+  let timeout;
   document.getElementById("searchForm").addEventListener("keyup", () => {
-    
-    
-
+    clearTimeout(timeout);
       timeout =  setTimeout(function() {
            
         let formData = document.getElementById("searchForm").elements;
@@ -168,7 +166,7 @@
   })
 
   document.getElementById("searchForm").addEventListener("keydown", function(){
-    clearTimeout(timeout);
+    
   })
 
 
