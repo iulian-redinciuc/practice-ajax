@@ -52,39 +52,3 @@ function getAge(timestamp) {
   return days;
 }
 
-class DataService {
-
-  static deletePet(petEl, petID) {
-    petEl.querySelector("[data-type=delete]").addEventListener("click", () => {
-
-      let del = new XMLHttpRequest();
-      del.open("DELETE", `/pets/${petID}`);
-      del.setRequestHeader("Content-Type", "application/json");
-      del.addEventListener("load", function onLoad() {
-        document.querySelector(`[data-id='${petID}']`).remove();
-      });
-
-      del.addEventListener("error", function onError() {});
-
-      del.send();
-    });
-  }
-
-  static requestPet(petId) {
-    let getPet = new XMLHttpRequest();
-    getPet.open("GET", `/pets/${petId}`);
-    getPet.setRequestHeader("Content-Type", "application/json");
-    getPet.addEventListener("load", function onLoad() {
-      switch (getPet.status) {
-        case 200:
-        console.log(JSON.parse(getPet.response));
-         return JSON.parse(getPet.response);
-      }
-    });
-  
-    getPet.addEventListener("error", function onError() {});
-  
-    getPet.send();
-  }
-
-}
