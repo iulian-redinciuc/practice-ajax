@@ -25,8 +25,17 @@ class DB {
                     // 404
                     throw (404);
                 }
-                return writePets(pets).then()
+                return writePets(pets);
             })
+    }
+
+    deletePets(petIds) {
+        return readPets()
+            .then(pets => pets.filter(pet => !petIds.includes(pet.id)))
+            .then(pets => writePets(pets))
+            .catch(err => {
+                throw 400;
+            });
     }
 
     getAllPets() {
@@ -37,6 +46,14 @@ class DB {
         return readPets().then(pets => {
             return pets.filter(pet => pet.name.toUpperCase().indexOf(name.toUpperCase()) === 0);
         })
+    }
+
+    getPetsPaginated(pageNo, pageSize = 5, name) {
+        return readPets()
+            .then(pets => pets.filter(pet => name === undefined || pet.name.toUpperCase().indexOf(name.toUpperCase()) === 0))
+            .then(pets => {
+                return pets.slice(pageNo * pageSize, (pageNo + 1) * pageSize);
+            });
     }
 
     getPet(petId) {

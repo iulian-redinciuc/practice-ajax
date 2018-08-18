@@ -1,24 +1,23 @@
 class Auth {
 
-    static login(succesCb) {
-        let xhr = new XMLHttpRequest();
-        xhr.open("POST", `/login`);
-        xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.addEventListener("load", function onLoad() {
-          switch (xhr.status) {
-            case 200:
-              succesCb(JSON.parse(xhr.response));
-              break;
-            case 400:
-              break;
-            default:
-              break;
-          }
-        });
-    
-        xhr.addEventListener("error", function onError() {});
-    
-        xhr.send();
-      }
+    static login(succesCb, errorCb) {
+
+        HTTP.request("POST", `/login`, function (res, resHead) {
+            localStorage.setItem("token", resHead.token);
+            succesCb();
+        }, errorCb);
+
+    }
+
+    static logout(succesCb, errorCb) {
+
+        HTTP.request("POST", `/logout`, function (res, resHead) {
+            localStorage.removeItem("token");
+            succesCb();
+        }, errorCb, {
+                "Content-Type": "application/json",
+                "token": localStorage.getItem("token")
+            });
+    }
 
 }

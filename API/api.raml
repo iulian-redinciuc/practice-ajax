@@ -10,14 +10,22 @@ version: v1
                 name:
                     type: string
                     required: false
-                    description: A pet's name
+                    description: A pet's name - used to get only pets whose names start with this string
+                pageNo:
+                    type: string
+                    required: false
+                    description: Page number - starting at 0
+                pageSize:
+                    type: string
+                    required: false
+                    description: Page size - default: 5
             headers:
                 token:
                     required: false
                     description: Authentication token that the server provided. - only if you're running the server in the "auth" mode
             responses:
                 200:
-                    description: The list of pets whose names start with the query param or the entire list if no query param is passed.
+                    description: The entire list of pets or the filtered/paginated list if query params were passed.
                     body:
                         application/json:
                             example: !include examples/GET_pets.json
@@ -39,6 +47,20 @@ version: v1
                             example: !include examples/POST_pets-res.json
                 401:
                     description: Not authenticated  - only if you're running the server in the "auth" mode
+        delete:
+            description: Batch delete of pets
+            headers:
+                token:
+                    required: false
+                    description: Authentication token that the server provided. - only if you're running the server in the "auth" mode
+            body:
+                application/json:
+                    example:  !include examples/DELETE_pets-req.json
+            responses:
+                200: 
+                401:
+                    description: Not authenticated  - only if you're running the server in the "auth" mode
+            
     /{id}:
         get:
             description: Get info about a certain pet

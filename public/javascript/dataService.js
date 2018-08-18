@@ -1,125 +1,43 @@
 class DataService {
-    static getPets(succesCb) {
-      let xhr = new XMLHttpRequest();
-      xhr.open("GET", `/pets`);
-      xhr.setRequestHeader("Content-Type", "application/json");
-      xhr.addEventListener("load", function onLoad() {
-        switch (xhr.status) {
-          case 200:
-            succesCb(JSON.parse(xhr.response));
-            break;
-          case 400:
-            break;
-          default:
-            break;
-        }
-      });
-  
-      xhr.addEventListener("error", function onError() {});
-  
-      xhr.send();
+    static getPets(succesCb, errorCb) {
+
+      HTTP.request("GET", "/pets", succesCb, errorCb);
+
     }
     static getPet(petID, succesCb) {
-      let xhr = new XMLHttpRequest();
-      xhr.open("GET", `/pets/${petID}`);
-  
-      xhr.addEventListener("load", function onLoad() {
-        switch (xhr.status) {
-          case 200:
-            succesCb(JSON.parse(xhr.response));
-            break;
-          case 400:
-            break;
-          default:
-            break;
-        }
-      });
+
+      HTTP.request("GET", `/pets/${petID}`, succesCb, errorCb);
     }
   
-    static createPet(payload, succesCb) {
-      let xhr = new XMLHttpRequest();
-      xhr.open("POST", `/pets`);
-      xhr.setRequestHeader("Content-Type", "application/json");
-      xhr.addEventListener("load", function onLoad() {
-        switch (xhr.status) {
-          case 200:
-            succesCb(JSON.parse(xhr.response));
-            break;
-          case 400:
-            break;
-          default:
-            break;
-        }
-      });
-  
-      xhr.addEventListener("error", function onError() {});
-  
-      xhr.send(JSON.stringify(payload));
+    static createPet(payload, succesCb, errorCb) {
+
+      HTTP.request("POST", `/pets`, succesCb, errorCb, {
+        "Content-Type": "application/json",
+        "token": localStorage.getItem("token")
+      }, payload);
     }
   
-    static deletePet(petID, succesCb) {
-  
-        let del = new XMLHttpRequest();
-        del.open("DELETE", `/pets/${petID}`);
-        del.setRequestHeader("Content-Type", "application/json");
-        del.addEventListener("load", function onLoad() {
-          switch (del.status) {
-            case 200:
-              succesCb();
-              break;
-            case 400:
-              break;
-            default:
-              break;
-          }
+    static deletePet(petID, succesCb, errorCb) {
+
+        HTTP.request("DELETE", `/pets/${petID}`, succesCb, errorCb, {
+          "Content-Type": "application/json",
+          "token": localStorage.getItem("token")
         });
   
-        del.addEventListener("error", function onError() {});
-  
-        del.send();
-  
     }
   
-    static searchPet(paramString, succesCb) {
-      let xhr = new XMLHttpRequest();
-      xhr.open("GET", `/pets/?name=${paramString}`);
-      xhr.setRequestHeader("Content-Type", "application/json");
-      xhr.addEventListener("load", function onLoad() {
-        switch (xhr.status) {
-          case 200:
-            succesCb(JSON.parse(xhr.response));
-            break;
-          case 400:
-            break;
-          default:
-            break;
-        }
-      });
-  
-      xhr.addEventListener("error", function onError() {});
-  
-      xhr.send();
+    static searchPet(paramString, succesCb, errorCb) {
+
+      HTTP.request("GET", `/pets/?name=${paramString}`, succesCb, errorCb);
+
     }
 
-    static editPet(petID, payload, succesCb) {
-        let xhr = new XMLHttpRequest();
-        xhr.open("PUT", `/pets/${petID}`);
-        xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.addEventListener("load", function onLoad() {
-          switch (xhr.status) {
-            case 200:
-              succesCb(JSON.parse(xhr.response));
-              break;
-            case 400:
-              break;
-            default:
-              break;
-          }
-        });
-  
-        xhr.addEventListener("error", function onError() {});
-  
-        xhr.send(JSON.stringify(payload));
+    static editPet(petID, payload, succesCb, errorCb) {
+
+        HTTP.request("PUT", `/pets/${petID}`, succesCb, errorCb, {
+          "Content-Type": "application/json",
+          "token": localStorage.getItem("token")
+        }, payload);
     }
   }
   

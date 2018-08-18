@@ -1,8 +1,10 @@
 {
     "name": "ajax-practice",
     "scripts": {
-        "serve": "nodemon server.js",
-        "serve-with-auth": "nodemon server.js --auth",
+        "serve": "node server.js",
+        "dev": "nodemon server.js",
+        "serve-with-auth": "node server.js --auth",
+        "serve-with-cors": "node server.js --cors",
         "raml": "raml2html API/api.raml > API/api.html"
     },
     "dependencies": {

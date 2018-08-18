@@ -34,7 +34,6 @@
                     "#swal2-content .pet .age #created-at"
                   ).innerHTML;
                   let newDate = Date.now() - updateDate * 86400000;
-                  console.log(newDate);
                   if (result.value) {
                     let payload = {
                       name: newName,
@@ -123,7 +122,6 @@
 
     DataService.searchPet(name, function(res) {
       petsContainer.innerHTML = null;
-      console.log(res);
       if (res.length === 0) {
         swal({
           type: "error",
@@ -156,5 +154,29 @@
 
 
   });
+
+  /* login */
+  document.getElementById("loginBtn").addEventListener("click", () =>{
+    Auth.login((res) => {
+      swal(
+        'Logged In!',
+        '',
+        'success'
+      )
+    })
+  })
+
+
+  document.getElementById("logoutBtn").addEventListener("click", () => {
+    Auth.logout((res) => {
+
+        swal(
+          'Sogged Out',
+          '',
+          'success'
+        )
+      
+    })
+  })
 
 })();
